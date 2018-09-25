@@ -1,16 +1,29 @@
 package view;
 
-import java.awt.Dimension;
+import controller.Controller;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
-import javax.swing.JPanel;
-
-public class BottleField {
-	public JPanel panel = new JPanel();
+public class BottleField{
+	public int height = 300, width = 500;
+	public Canvas canvas;
+	public Controller controller;	
 	
-	public BottleField()
+	public BottleField(Controller controller)
 	{
-		panel.setPreferredSize(new Dimension(250,250));
+		this.controller = controller;
 		
-		panel.setVisible(true);
+		canvas = new Canvas();
+		canvas.setHeight(height);
+        canvas.setWidth(width);
 	}
+	
+	
+	public Canvas getCanvas()
+	{
+		return canvas;
+	}
+	
+	
 }

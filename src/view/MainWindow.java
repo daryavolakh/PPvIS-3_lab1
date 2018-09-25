@@ -1,31 +1,67 @@
 package view;
+import controller.Controller;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Insets;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class MainWindow {
-	JFrame frame = new JFrame("Something");
-	JPanel panel = new JPanel();
-	PanelOfButtons panelOfButtons = new PanelOfButtons();
-	BottleField field = new BottleField();
-	public MainWindow()
+	public Controller controller;
+	public Stage stage; 
+	public Button buttonStart = new Button("START");
+	public Label labelLevel = new Label("  level: ");
+	public Label levelNum = new Label("0");
+	public BottleField bottleField;
+	
+	public MainWindow(Controller controller)
 	{
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setSize(1000,600);
-		frame.setResizable(false);
+		this.controller = controller;
+		stage = new Stage();
+		stage.setTitle("RUN!!!");
+		stage.setWidth(800);
+		stage.setHeight(600);
 		
-		panel.setLayout(new BorderLayout());
-		panel.add(field.panel);
-		panel.add(panelOfButtons.panel);
-		frame.getContentPane().add(panel);
-		//frame.pack();
+		VBox buttonsPane = new VBox();
+		buttonsPane.setPadding(new Insets(10,10,10,10));
+		
+		buttonStart.setPrefSize(100, 50);
+		labelLevel.setPrefSize(50, 50);
+		levelNum.setPrefSize(50, 50);
+		
+		buttonsPane.getChildren().addAll(buttonStart,labelLevel,levelNum);
+		
+		HBox pane = new HBox();
+		bottleField = new BottleField(controller);
+		pane.getChildren().addAll(bottleField.getCanvas(),buttonsPane);
+
+		Scene scene=new Scene(pane);
+		stage.setScene(scene);			
 	}
 	
 	public void show()
 	{
-		frame.setVisible(true);
+		stage.show();
+	}
+
+	public void changeLevel()
+	{
+		getLevel();
+		setLevel();
+	}
+	
+	public int getLevel()
+	{
+		int level = Integer.parseInt(levelNum.getText());
+		return level;
+	}
+	
+	public void setLevel()
+	{
+		int prevValue = getLevel();
+		levelNum.setText(String.valueOf(prevValue + 1));
 	}
 }
