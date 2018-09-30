@@ -2,17 +2,13 @@ package view;
 
 import controller.Controller;
 import javafx.stage.Stage;
-import javafx.scene.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
-import javafx.util.Duration;
-import javafx.animation.KeyFrame;
 import javafx.event.EventHandler;
-import javafx.event.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 
@@ -42,46 +38,45 @@ public class MainWindow {
 		buttonsPane.getChildren().addAll(buttonStart,levelValue);
 		
 		HBox pane = new HBox();
-		bottleField = new BottleField(controller);
-		pane.getChildren().addAll(bottleField.getCanvas(),buttonsPane);
-
 		Scene scene=new Scene(pane);
-		stage.setScene(scene);	
+		pane.getChildren().add(buttonsPane);
+
 		
-		/*scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
-	        @Override
-	        public void handle(KeyEvent event) {
-	            if (event.getCode() == KeyCode.LEFT){
-	            	bottleField.getPrisoner().setTranslateX(bottleField.getPrisoner().getTranslateX() - 5);
-	            }
-	            
-	        }
-	    });*/
 		
-		scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent ke) {
-                if (ke.getCharacter().equals("a"))
+		buttonStart.setOnAction(e -> {
+			bottleField = new BottleField(MainWindow.this,controller);
+			pane.getChildren().add(bottleField.getCanvas());
+		});
+				
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.A)
                 {
-                	bottleField.getPrisoner().setTranslateX(bottleField.getPrisoner().getTranslateX() - 5);
+                	bottleField.getPrisoner().setTranslateX(bottleField.getPrisoner().getTranslateX() - 15);
+                	bottleField.startSecurityMove();                
                 }
                 
-                if (ke.getCharacter().equals("d"))
+                if (keyEvent.getCode() == KeyCode.D)
                 {
-                	bottleField.getPrisoner().setTranslateX(bottleField.getPrisoner().getTranslateX() + 5);
+                	bottleField.getPrisoner().setTranslateX(bottleField.getPrisoner().getTranslateX() + 15);
+                	bottleField.startSecurityMove();
                 }
                 
-                if (ke.getCharacter().equals("w"))
+                if (keyEvent.getCode() == KeyCode.W)
                 {
-                	bottleField.getPrisoner().setTranslateY(bottleField.getPrisoner().getTranslateY() - 5);
+                	bottleField.getPrisoner().setTranslateY(bottleField.getPrisoner().getTranslateY() - 15);
+                	bottleField.startSecurityMove();
                 }
                 
-                if (ke.getCharacter().equals("s"))
+                if (keyEvent.getCode() == KeyCode.S)
                 {
-                	bottleField.getPrisoner().setTranslateY(bottleField.getPrisoner().getTranslateY() + 5);
+                	bottleField.getPrisoner().setTranslateY(bottleField.getPrisoner().getTranslateY() + 15);
+                	bottleField.startSecurityMove();
                 }
             }
 		});
-		            
+		   		
+		stage.setScene(scene);	
 	}
 
 	public void show() {
