@@ -49,16 +49,16 @@ public class BottleField {
 		double x = securityCircle.getTranslateX();
 		double y = securityCircle.getTranslateY();
 		
-		System.out.println("X= " + x + " Y= " + y);
+		//System.out.println("X= " + x + " Y= " + y);
 		double newX = 0 + Math.random() * 5;
 		double newY = 0 + Math.random() * 5;
 		
-		System.out.println("newX= " + (x + newX*10) + " newY= " + (y - newY*10) + " CENTER_X: " + securityCircle.getCenterX());
+		//System.out.println("newX= " + (x + newX*10) + " newY= " + (y - newY*10)); // + " CENTER_X: " + securityCircle.getCenterX());
 		
 		if (Math.abs(y - newY*10) > (height - 230))
 		{
 			line.getPoints().addAll(new Double[]{x,y, x - newX*10,y + newY*10});
-			System.out.println("CHOOSE IF");
+		//	System.out.println("CHOOSE IF");
 		}
 		else
 			line.getPoints().addAll(new Double[]{x,y, x + newX*10,y - newY*10});
@@ -72,13 +72,12 @@ public class BottleField {
 		translation.setCycleCount(1);
 		
 		translation.play();
-		System.out.println("PRISONER_X=" + prisonerCircle.getTranslateX() + "PRISONER_Y=" + prisonerCircle.getTranslateY());
-		if ((x + newX*10) - Math.abs(prisonerCircle.getTranslateX()) <=40 && Math.abs(y - newY*10) - Math.abs(prisonerCircle.getTranslateY()) <=38)
+		
+		if ((Math.abs((securityCircle.getLayoutX() + securityCircle.getTranslateX()) - (prisonerCircle.getLayoutX() + prisonerCircle.getTranslateX())) < 40) && ((Math.abs(securityCircle.getLayoutY() + securityCircle.getTranslateY()) - (prisonerCircle.getLayoutY() + prisonerCircle.getTranslateY()))) < 40)
 			System.out.println("POPALSYA!!!");
-		System.out.println("LocX= " + securityCircle.getLayoutX() + " LocY= " + securityCircle.getLayoutY());
-	
-		// перемещение на onMove
-		//translation.get
+		System.out.println("SECURITY_X=" + (securityCircle.getLayoutX() + securityCircle.getTranslateX()) + "  PRISONER_X=" + (prisonerCircle.getLayoutX() + prisonerCircle.getTranslateX()));
+		System.out.println("SECURITY_Y=" + (securityCircle.getLayoutY() + securityCircle.getTranslateY()) + "  PRISONER_Y=" + (prisonerCircle.getLayoutY() + prisonerCircle.getTranslateY()));
+			
 	}
 	
 	public Circle getPrisoner()
