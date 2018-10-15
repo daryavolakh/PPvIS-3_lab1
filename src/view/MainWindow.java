@@ -25,12 +25,12 @@ public class MainWindow {
 		this.controller = controller;
 		stage = new Stage();
 		stage.setTitle("RUN!!!");
-		stage.setWidth(800);
+		stage.setWidth(696);
 		stage.setHeight(555);
 		stage.setResizable(false);
 		
 		VBox buttonsPane = new VBox();
-		buttonsPane.setPadding(new Insets(15,15,15,15));
+		buttonsPane.setPadding(new Insets(20,15,20,15));
 		
 		HBox levelValue = new HBox();
 		levelValue.getChildren().addAll(labelLevel,levelNum);
@@ -39,9 +39,7 @@ public class MainWindow {
 		
 		HBox pane = new HBox();
 		Scene scene=new Scene(pane);
-		pane.getChildren().add(buttonsPane);
-
-		
+		pane.getChildren().add(buttonsPane);		
 		
 		buttonStart.setOnAction(e -> {
 			bottleField = new BottleField(MainWindow.this,controller);
@@ -96,7 +94,13 @@ public class MainWindow {
 	public void setLevel() {
 		int prevValue = getLevel();
 		levelNum.setText(String.valueOf(prevValue + 1));
-	}
-
+	}	
 	
+	public void closeBottleField() {
+		
+	}
+	
+	public void changeBottleField()	{
+		
+	}
 }
