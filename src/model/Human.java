@@ -1,15 +1,13 @@
 package model;
 
-
-public class Human extends Field{
+public class Human extends Field {
 	public Human(int pointX, int pointY) {
 		super(pointX, pointY);
 	}
-
-/*	public Circle getHuman()
+	
+	public void changePoints(int x, int y)
 	{
-		return ;
-	}*/
-	
-	
+		pointX += x;
+		pointY += y;
+	}
 }
