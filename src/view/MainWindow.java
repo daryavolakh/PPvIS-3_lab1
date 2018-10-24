@@ -13,12 +13,14 @@ import javafx.scene.input.KeyCode;
 import javafx.event.EventHandler;
 
 public class MainWindow {
-	public Controller controller;
-	public Stage stage;
-	public Button buttonStart = new Button("START");
-	public Label labelLevel = new Label("  level: ");
-	public Label levelNum = new Label("0");
-	public BottleField bottleField;
+	private Controller controller;
+	private HBox pane;
+	private Stage stage;
+	private Button buttonStart = new Button("START");
+	private int level = 1;
+	private Label labelLevel = new Label("  level: ");
+	private Label levelNum = new Label("1");
+	private BottleField bottleField;
 
 	public MainWindow(Controller controller) {
 		this.controller = controller;
@@ -36,53 +38,38 @@ public class MainWindow {
 
 		buttonsPane.getChildren().addAll(buttonStart, levelValue);
 
-		HBox pane = new HBox();
+		pane = new HBox();
 		Scene scene = new Scene(pane);
-		pane.getChildren().add(buttonsPane);
+		pane.getChildren().add(buttonsPane);		
 
-		bottleField = new BottleField(MainWindow.this, controller);
-		pane.getChildren().add(bottleField.getGridPane());
-
-		/*
-		 * buttonStart.setOnAction(e -> { bottleField = new
-		 
-		 * pane.getChildren().add(bottleField.getCanvas()); });
-		 */
+		buttonStart.setOnAction(e -> {
+			bottleField = new BottleField(MainWindow.this, controller);
+			//bottleField.setLevel(level);
+			pane.getChildren().add(bottleField.getGridPane());
+		});
 
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.A)
-                {
-                	controller.movePrisoner(0,-1);
-                	update();
-                	controller.moveSecurity();
-                	update();
-                }
-                
-                if (keyEvent.getCode() == KeyCode.D)
-                {
-                	controller.movePrisoner(0,1);
-                	update();
-                	controller.moveSecurity();
-                	update();
-                }
-                
-                if (keyEvent.getCode() == KeyCode.W)
-                {
-                	controller.movePrisoner(-1,0);
-                	update();
-                	controller.moveSecurity();
-                	update();
-                }
-                
-                if (keyEvent.getCode() == KeyCode.S)
-                {
-                	controller.movePrisoner(1,0);
-                	update();
-                	controller.moveSecurity();
-                	update();
-                }
-            }
+			public void handle(KeyEvent keyEvent) {
+				if (keyEvent.getCode() == KeyCode.A) {
+					controller.checkLeft(0,-1);
+					startMove();
+				}
+
+				if (keyEvent.getCode() == KeyCode.D) {
+					controller.checkRight(0, 1);
+					startMove();
+				}
+
+				if (keyEvent.getCode() == KeyCode.W) {
+					controller.checkTop(-1, 0);
+					startMove();
+				}
+
+				if (keyEvent.getCode() == KeyCode.S) {
+					controller.checkBottom(1, 0);
+					startMove();
+				}
+			}
 		});
 
 		stage.setScene(scene);
@@ -92,10 +79,10 @@ public class MainWindow {
 		stage.show();
 	}
 
-	public void changeLevel() {
-		getLevel();
-		setLevel();
-	}
+//	public void changeLevel() {
+//		getLevel();
+//		setLevel();
+//	}
 
 	public int getLevel() {
 		int level = Integer.parseInt(levelNum.getText());
@@ -107,16 +94,42 @@ public class MainWindow {
 		levelNum.setText(String.valueOf(prevValue + 1));
 	}
 	
+	public void startMove() {
+		//controller.movePrisoner(x, y);
+		update();
+		check();
+		controller.moveSecurity();
+		update();
+		check();
+	}
+
 	public void update() {
 		controller.updateWorld();
 		bottleField.repaint();
 	}
+	
+	public void check() {
+		if(controller.isPrisonerWin()) {
+			level++;
+			System.out.println("LEVEL " + level);
+			closeBottleField();
+		//	changeBottleField();			
+			levelNum.setText(Integer.toString(level));
+		}
+		
+		else if (controller.isPrisonerLoose()) {
+			closeBottleField();
+		}
+	}
 
 	public void closeBottleField() {
-
+		pane.getChildren().remove(bottleField.getGridPane());
+		System.out.println("CLOSE BOTTLE");
 	}
 
-	public void changeBottleField() {
-
-	}
+//	public void changeBottleField() {
+//		this.bottleField = new BottleField(MainWindow.this,controller);
+//		this.bottleField.setLevel(level);
+//		pane.getChildren().add(this.bottleField.getGridPane());
+//	}
 }

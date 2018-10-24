@@ -1,21 +1,15 @@
 package model;
 
+import java.awt.Color;
+
 public class Field {
-	public int pointX;
-	public int pointY;
-	public boolean fieldFree = true;
+	protected int pointX;
+	protected int pointY;
+	private Color color = Color.WHITE;
 
 	public Field(int pointX, int pointY) {
 		this.pointX = pointX;
 		this.pointY = pointY;
-	}
-
-	public boolean isFieldFree() {
-		return fieldFree;
-	}
-
-	public void fieldBusy() {
-		fieldFree = false;
 	}
 
 	public int getRow() {
@@ -24,6 +18,10 @@ public class Field {
 
 	public int getColumn() {
 		return pointY;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 
 }

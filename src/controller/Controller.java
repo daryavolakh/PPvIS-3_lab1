@@ -2,11 +2,13 @@ package controller;
 
 import model.Field;
 import model.World;
+import model.WorldSecondLevel;
 
 public class Controller {
-
-	World world;
-
+	private World world;
+	public Controller(World world) {
+		this.world = world;
+	}
 	public void createWorld() {
 		world = new World();
 	}
@@ -31,6 +33,22 @@ public class Controller {
 		world.movePrisoner(deltaX, deltaY);
 	}
 	
+	public void checkLeft(int x, int y) {
+		world.checkLeft(x, y);
+	}
+	
+	public void checkRight(int x, int y) {
+		world.checkRight(x, y);
+	}
+	
+	public void checkTop(int x, int y) {
+		world.checkTop(x, y);
+	}
+	
+	public void checkBottom(int x, int y) {
+		world.checkBottom(x, y);
+	}
+	
 	public void moveSecurity()
 	{
 		world.moveSecurity(); 
@@ -39,17 +57,20 @@ public class Controller {
 	public void updateWorld() {
 		world.update();
 	}
-	/*
-	 * public Circle createSecurity(Color color) { security = new Human(color);
-	 * return security.getHuman(); }
-	 * 
-	 * public Circle getSecurity() { return security.getHuman(); }
-	 * 
-	 * public Circle createPrisoner(Color color) { prisoner = new Human(color);
-	 * return prisoner.getHuman();
-	 * 
-	 * }
-	 * 
-	 * public Circle getPrisoner() { return security.getHuman(); }
-	 */
+	
+	public void startNextLevel() {
+		
+	}
+	
+	public boolean isPrisonerWin() {
+		return world.isPrisonerWin();
+	}
+	
+	public boolean isPrisonerLoose() {
+		return world.isPrisonerLoose();
+	}
+	
+	public void createWorldForSecondLevel() {
+		world = new WorldSecondLevel();
+	}
 }
