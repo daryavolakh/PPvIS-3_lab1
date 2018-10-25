@@ -3,7 +3,7 @@ package model;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class WorldSecondLevel extends World {
+public class WorldSecondLevel{
 	private int rows = 16;
 	private int columns = 20;
 	private Field[][] fields = new Field[rows][columns];
@@ -16,7 +16,7 @@ public class WorldSecondLevel extends World {
 	private Boolean prisonerLoose = false;
 
 	public WorldSecondLevel() {
-		
+
 		System.out.println("I AM HERE");
 		firstDoor = new Door(3, 0);
 		secondDoor = new Door(4, 0);
@@ -25,15 +25,14 @@ public class WorldSecondLevel extends World {
 				if (indexR == rows - 2 && indexC == columns - 1) {
 					prisoner = new Human(indexR, indexC);
 					fields[indexR][indexC] = prisoner;
-				}
-				if (indexR == 3 && indexC == 0) {
+				} else if (indexR == 3 && indexC == 0) {
 					fields[indexR][indexC] = firstDoor;
 				} else if (indexR == 4 && indexC == 0) {
 					fields[indexR][indexC] = secondDoor;
 				} else if (indexR == 0 && indexC == 2) {
 					firstSecurity = new Security(indexR, indexC);
 					fields[indexR][indexC] = firstSecurity;
-				} else if (indexR == 9 && indexC == 5) {
+				} else if (indexR == 2 && indexC == 2) {
 					secondSecurity = new Security(indexR, indexC);
 					fields[indexR][indexC] = secondSecurity;
 				} else {
@@ -97,7 +96,7 @@ public class WorldSecondLevel extends World {
 
 	public boolean catchPrisoner() {
 		if (prisoner.getRow() == firstSecurity.getRow() && prisoner.getColumn() == firstSecurity.getColumn()
-				|| prisoner.getRow() == secondSecurity.getRow() && prisoner.getColumn() == secondSecurity.getColumn()){
+				|| prisoner.getRow() == secondSecurity.getRow() && prisoner.getColumn() == secondSecurity.getColumn()) {
 			return true;
 		}
 		return false;
@@ -122,4 +121,62 @@ public class WorldSecondLevel extends World {
 	public boolean isPrisonerLoose() {
 		return prisonerLoose;
 	}
+	
+
+	public Field getField(int x, int y) {
+		return fields[x][y];
+	}
+
+	public boolean isFieldDoor(int x, int y) {
+		return getField(x, y) instanceof Door;
+	}
+
+	public boolean isFieldSecurity(int x, int y) {
+		return getField(x, y) instanceof Security;
+	}
+
+	public boolean isFieldHuman(int x, int y) {
+		return getField(x, y) instanceof Human;
+	}
+
+	public void movePrisoner(int x, int y) {
+			prisoner.changePoints(x, y);
+	}
+	
+	public void checkLeft(int x, int y) {
+		if (prisoner.getColumn() == 0) {
+			prisoner.changePoints(0, 0);
+		}
+		else {
+			movePrisoner(x,y);
+		}
+	}
+	
+	public void checkRight(int x, int y) {
+		if (prisoner.getColumn() == columns - 1) {
+			prisoner.changePoints(0, 0);
+		} 		
+		else {
+			movePrisoner(x,y);
+		}
+	}
+	
+	public void checkTop(int x, int y) {
+		if (prisoner.getRow() == 0) {
+			prisoner.changePoints(0, 0);
+		}
+		else {
+			movePrisoner(x,y);
+		}
+	}
+	
+	public void checkBottom(int x, int y) {
+		if (prisoner.getRow() == rows - 1) {
+			prisoner.changePoints(0, 0);
+		} 		
+		else {
+			movePrisoner(x,y);
+		}
+	}
+
 }

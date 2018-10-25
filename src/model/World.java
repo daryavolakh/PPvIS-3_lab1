@@ -8,29 +8,83 @@ public class World {
 	private int columns = 20;
 	private Field[][] fields = new Field[rows][columns];
 	private Human prisoner;
-	private Security security;
+	private Security firstSecurity;
+	private Security secondSecurity;
 	private Door firstDoor;
 	private Door secondDoor;
 	private Boolean prisonerWin = false;
 	private Boolean prisonerLoose = false;
+	private int level;
 
-	public World() {
+	public World(int level) {
+		this.level = level;
 		firstDoor = new Door(3, 0);
 		secondDoor = new Door(4, 0);
-		for (int indexR = 0; indexR < rows; indexR++) {
-			for (int indexC = 0; indexC < columns; indexC++) {
-				if (indexR == 3 && indexC == 0) {
-					fields[indexR][indexC] = firstDoor;
-				} else if (indexR == 4 && indexC == 0) {
-					fields[indexR][indexC] = secondDoor;
-				} else if (indexR == 3 && indexC == 2) {
-					security = new Security(indexR, indexC);
-					fields[indexR][indexC] = security;
-				} else if (indexR == rows - 2 && indexC == columns - 1) {
-					prisoner = new Human(indexR, indexC);
-					fields[indexR][indexC] = prisoner;
-				} else {
-					fields[indexR][indexC] = new Field(indexR, indexC);
+
+		if (level == 1) {
+			System.out.println("START LEVEL 1");
+			for (int indexR = 0; indexR < rows; indexR++) {
+				for (int indexC = 0; indexC < columns; indexC++) {
+					if (indexR == 3 && indexC == 0) {
+						fields[indexR][indexC] = firstDoor;
+					} else if (indexR == 4 && indexC == 0) {
+						fields[indexR][indexC] = secondDoor;
+					} else if (indexR == 3 && indexC == 2) {
+						firstSecurity = new Security(indexR, indexC);
+						fields[indexR][indexC] = firstSecurity;
+					} else if (indexR == rows - 2 && indexC == columns - 1) {
+						prisoner = new Human(indexR, indexC);
+						fields[indexR][indexC] = prisoner;
+					} else {
+						fields[indexR][indexC] = new Field(indexR, indexC);
+					}
+				}
+			}
+		}
+
+		else if (level == 2) {			
+			System.out.println("START LEVEL 2");
+			for (int indexR = 0; indexR < rows; indexR++) {
+				for (int indexC = 0; indexC < columns; indexC++) {
+					if (indexR == rows - 2 && indexC == columns - 1) {
+						prisoner = new Human(indexR, indexC);
+						fields[indexR][indexC] = prisoner;
+					} else if (indexR == 3 && indexC == 0) {
+						fields[indexR][indexC] = firstDoor;
+					} else if (indexR == 4 && indexC == 0) {
+						fields[indexR][indexC] = secondDoor;
+					} else if (indexR == 0 && indexC == 2) {
+						firstSecurity = new Security(indexR, indexC);
+						fields[indexR][indexC] = firstSecurity;
+					} else if (indexR == 2 && indexC == 2) {
+						secondSecurity = new Security(indexR, indexC);
+						fields[indexR][indexC] = secondSecurity;
+					} else {
+						fields[indexR][indexC] = new Field(indexR, indexC);
+					}
+				}
+			}
+		}
+		
+		else if (level == 3) {
+			for (int indexR = 0; indexR < rows; indexR++) {
+				for (int indexC = 0; indexC < columns; indexC++) {
+					if (indexR == rows - 2 && indexC == columns - 1) {
+						prisoner = new Human(indexR, indexC);
+						fields[indexR][indexC] = prisoner;
+					} else if (indexR == 3 && indexC == 0) {
+						fields[indexR][indexC] = firstDoor;
+					} else if (indexR == 4 && indexC == 0) {
+						fields[indexR][indexC] = secondDoor;
+					} else if (indexR == 0 && indexC == 2) {
+						firstSecurity = new Security(indexR, indexC);
+						fields[indexR][indexC] = firstSecurity;
+					} else if (indexR == 2 && indexC == 2) {
+						secondSecurity = new Security(indexR, indexC);
+						fields[indexR][indexC] = secondSecurity;
+					} else {
+						fields[indexR][indexC] = new Field(indexR, indexC);
+					}
 				}
 			}
 		}
@@ -53,50 +107,49 @@ public class World {
 	}
 
 	public void movePrisoner(int x, int y) {
-			prisoner.changePoints(x, y);
+		prisoner.changePoints(x, y);
 	}
-	
+
 	public void checkLeft(int x, int y) {
 		if (prisoner.getColumn() == 0) {
 			prisoner.changePoints(0, 0);
-		}
-		else {
-			movePrisoner(x,y);
+		} else {
+			movePrisoner(x, y);
 		}
 	}
-	
+
 	public void checkRight(int x, int y) {
 		if (prisoner.getColumn() == columns - 1) {
 			prisoner.changePoints(0, 0);
-		} 		
-		else {
-			movePrisoner(x,y);
+		} else {
+			movePrisoner(x, y);
 		}
 	}
-	
+
 	public void checkTop(int x, int y) {
 		if (prisoner.getRow() == 0) {
 			prisoner.changePoints(0, 0);
-		}
-		else {
-			movePrisoner(x,y);
+		} else {
+			movePrisoner(x, y);
 		}
 	}
-	
+
 	public void checkBottom(int x, int y) {
 		if (prisoner.getRow() == rows - 1) {
 			prisoner.changePoints(0, 0);
-		} 		
-		else {
-			movePrisoner(x,y);
+		} else {
+			movePrisoner(x, y);
 		}
 	}
 
 	public void moveSecurity() {
 		int prisonerRow = prisoner.getRow();
 		int prisonerCol = prisoner.getColumn();
-		
-		security.move(prisonerRow,prisonerCol);
+
+		firstSecurity.move(prisonerRow, prisonerCol);
+		if (level == 2) {
+			secondSecurity.move(prisonerRow, prisonerCol);
+		}
 	}
 
 	public void update() {
@@ -120,6 +173,7 @@ public class World {
 
 			prisonerLoose = true;
 		} else if (!catchPrisoner()) {
+
 			for (int indexR = 0; indexR < rows; indexR++) {
 				for (int indexC = 0; indexC < columns; indexC++) {
 					if (indexR == firstDoor.getRow() && indexC == firstDoor.getColumn()) {
@@ -128,20 +182,31 @@ public class World {
 						fields[indexR][indexC] = secondDoor;
 					} else if (indexR == prisoner.getRow() && indexC == prisoner.getColumn()) {
 						fields[indexR][indexC] = prisoner;
-					} else if (indexR == security.getRow() && indexC == security.getColumn()) {
-						fields[indexR][indexC] = security;
+					} else if (indexR == firstSecurity.getRow() && indexC == firstSecurity.getColumn()) {
+						fields[indexR][indexC] = firstSecurity;
 					} else if ((indexR == 3 || indexR == 4) && indexC == 0) {
 						fields[indexR][indexC] = new Door(indexR, indexC);
 					} else {
 						fields[indexR][indexC] = new Field(indexR, indexC);
 					}
+					if (level == 2 && indexR == secondSecurity.getRow()
+							&& indexC == secondSecurity.getColumn()) {
+						fields[indexR][indexC] = secondSecurity;
+					} 
 				}
 			}
 		}
 	}
 
 	public boolean catchPrisoner() {
-		if (prisoner.getRow() == security.getRow() && prisoner.getColumn() == security.getColumn()) {
+		boolean catchByFirstSecurity = prisoner.getRow() == firstSecurity.getRow()
+				&& prisoner.getColumn() == firstSecurity.getColumn();
+		boolean catchBySecondSecurity = false;
+		if (level == 2) {
+			catchBySecondSecurity = prisoner.getRow() == secondSecurity.getRow()
+					&& prisoner.getColumn() == secondSecurity.getColumn();
+		}
+		if (catchByFirstSecurity || catchBySecondSecurity) {
 			return true;
 		}
 		return false;
@@ -165,5 +230,9 @@ public class World {
 
 	public boolean isPrisonerLoose() {
 		return prisonerLoose;
+	}
+	
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }

@@ -43,7 +43,7 @@ public class MainWindow {
 		pane.getChildren().add(buttonsPane);		
 
 		buttonStart.setOnAction(e -> {
-			bottleField = new BottleField(MainWindow.this, controller);
+			bottleField = new BottleField(MainWindow.this, controller, level);
 			//bottleField.setLevel(level);
 			pane.getChildren().add(bottleField.getGridPane());
 		});
@@ -112,8 +112,9 @@ public class MainWindow {
 		if(controller.isPrisonerWin()) {
 			level++;
 			System.out.println("LEVEL " + level);
+			controller.setLevel(level);
 			closeBottleField();
-		//	changeBottleField();			
+			changeBottleField();			
 			levelNum.setText(Integer.toString(level));
 		}
 		
@@ -127,9 +128,9 @@ public class MainWindow {
 		System.out.println("CLOSE BOTTLE");
 	}
 
-//	public void changeBottleField() {
-//		this.bottleField = new BottleField(MainWindow.this,controller);
-//		this.bottleField.setLevel(level);
-//		pane.getChildren().add(this.bottleField.getGridPane());
-//	}
+	public void changeBottleField() {
+		
+		this.bottleField = new BottleField(MainWindow.this,controller, level);		
+		pane.getChildren().add(this.bottleField.getGridPane());
+	}
 }

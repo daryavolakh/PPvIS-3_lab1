@@ -39,13 +39,13 @@ public class Security extends Field {
 				changePoints(0,-1);
 			}
 	
-			else if (distanceX < 0 && distanceY >= 0) {
-				changePoints(-1,0);
-			}
-	
-			else if (distanceX > 0 && distanceY <= 0) {
-				changePoints(1, 0);
-			}
+//			else if (distanceX < 0 && distanceY >= 0) {
+//				changePoints(-1,0);
+//			}
+//	
+//			else if (distanceX > 0 && distanceY <= 0) {
+//				changePoints(1, 0);
+//			}
 		}
 	}
 

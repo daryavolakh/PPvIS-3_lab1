@@ -9,8 +9,8 @@ public class Controller {
 	public Controller(World world) {
 		this.world = world;
 	}
-	public void createWorld() {
-		world = new World();
+	public void createWorld(int level) {
+		world = new World(level);
 	}
 
 	public Field getField(int x, int y) {
@@ -70,7 +70,11 @@ public class Controller {
 		return world.isPrisonerLoose();
 	}
 	
-	public void createWorldForSecondLevel() {
-		world = new WorldSecondLevel();
+	public void setLevel(int level) {
+		world.setLevel(level);
 	}
+	
+	/*public void createWorldForSecondLevel() {
+		world = new WorldSecondLevel();
+	}*/
 }

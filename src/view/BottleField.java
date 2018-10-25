@@ -13,13 +13,13 @@ public class BottleField {
 	int rows = 16;
 	int columns = 20;
 
-	public BottleField(MainWindow mainWindow, Controller controller) {
+	public BottleField(MainWindow mainWindow, Controller controller, int level) {
 		this.mainWindow = mainWindow;
 		this.controller = controller;
 
 		gridPane = new GridPane();
 
-		controller.createWorld();
+		controller.createWorld(level);
 		repaint();
 	}
 
