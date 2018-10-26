@@ -13,30 +13,19 @@ public class BottleField {
 	int rows = 16;
 	int columns = 20;
 
-	public BottleField(MainWindow mainWindow, Controller controller, int level) {
+	public BottleField(MainWindow mainWindow, Controller controller) {
 		this.mainWindow = mainWindow;
 		this.controller = controller;
 
 		gridPane = new GridPane();
 
-		controller.createWorld(level);
+		controller.createWorld();
 		repaint();
 	}
 
 	public GridPane getGridPane() {
 		return gridPane;
 	}
-	
-//	public void setLevel(int level) {
-//		if (level == 1) {
-//			controller.createWorld();
-//			repaint();
-//		}
-//		else if (level == 2) {
-//			controller.createWorldForSecondLevel();
-//			repaint();
-//		}
-//	}
 
 	public void repaint() {
 		gridPane.getChildren().clear();

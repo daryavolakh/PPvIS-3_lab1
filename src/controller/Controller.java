@@ -2,15 +2,14 @@ package controller;
 
 import model.Field;
 import model.World;
-import model.WorldSecondLevel;
 
 public class Controller {
 	private World world;
 	public Controller(World world) {
 		this.world = world;
 	}
-	public void createWorld(int level) {
-		world = new World(level);
+	public void createWorld() {
+		world.generateWorld();
 	}
 
 	public Field getField(int x, int y) {
@@ -70,8 +69,12 @@ public class Controller {
 		return world.isPrisonerLoose();
 	}
 	
-	public void setLevel(int level) {
-		world.setLevel(level);
+	public Boolean prisonerWinGame() {
+		return world.prisonerWinGame();
+	}
+	
+	public int getLevel() {
+		return world.getLevel();
 	}
 	
 	/*public void createWorldForSecondLevel() {

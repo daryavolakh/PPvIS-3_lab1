@@ -3,8 +3,10 @@ package view;
 import controller.Controller;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
@@ -17,7 +19,6 @@ public class MainWindow {
 	private HBox pane;
 	private Stage stage;
 	private Button buttonStart = new Button("START");
-	private int level = 1;
 	private Label labelLevel = new Label("  level: ");
 	private Label levelNum = new Label("1");
 	private BottleField bottleField;
@@ -43,8 +44,7 @@ public class MainWindow {
 		pane.getChildren().add(buttonsPane);		
 
 		buttonStart.setOnAction(e -> {
-			bottleField = new BottleField(MainWindow.this, controller, level);
-			//bottleField.setLevel(level);
+			bottleField = new BottleField(MainWindow.this, controller);
 			pane.getChildren().add(bottleField.getGridPane());
 		});
 
@@ -79,11 +79,6 @@ public class MainWindow {
 		stage.show();
 	}
 
-//	public void changeLevel() {
-//		getLevel();
-//		setLevel();
-//	}
-
 	public int getLevel() {
 		int level = Integer.parseInt(levelNum.getText());
 		return level;
@@ -95,8 +90,7 @@ public class MainWindow {
 	}
 	
 	public void startMove() {
-		//controller.movePrisoner(x, y);
-		update();
+		//update();
 		check();
 		controller.moveSecurity();
 		update();
@@ -109,28 +103,51 @@ public class MainWindow {
 	}
 	
 	public void check() {
-		if(controller.isPrisonerWin()) {
-			level++;
-			System.out.println("LEVEL " + level);
-			controller.setLevel(level);
+		if (controller.prisonerWinGame()) {
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Congratulations!");
+
+			alert.setHeaderText("YOU WIN");
+			alert.setContentText("!!!!!!!!!!!!!!!!!");
+
+			alert.showAndWait();
+
 			closeBottleField();
-			changeBottleField();			
-			levelNum.setText(Integer.toString(level));
+			stage.close();
 		}
-		
-		else if (controller.isPrisonerLoose()) {
+		else if(controller.isPrisonerWin()) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Congratulations!");
+
+			alert.setHeaderText("Good job!");
+			alert.setContentText("Let's start next level!");
+
+			alert.showAndWait();
+			
+			closeBottleField();
+			
+			changeBottleField();			
+			levelNum.setText(Integer.toString(controller.getLevel()));
+		} else if (controller.isPrisonerLoose()) {
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Oops...");
+
+			alert.setHeaderText("Game over");
+			alert.setContentText("You loose :(");
+
+			alert.showAndWait();
 			closeBottleField();
 		}
 	}
 
 	public void closeBottleField() {
 		pane.getChildren().remove(bottleField.getGridPane());
-		System.out.println("CLOSE BOTTLE");
 	}
 
-	public void changeBottleField() {
-		
-		this.bottleField = new BottleField(MainWindow.this,controller, level);		
+	public void changeBottleField() {		
+		this.bottleField = new BottleField(MainWindow.this,controller);		
 		pane.getChildren().add(this.bottleField.getGridPane());
 	}
 }

@@ -1,11 +1,8 @@
 package model;
 
-import java.awt.Color;
-
 public class Field {
-	protected int pointX;
-	protected int pointY;
-	private Color color = Color.WHITE;
+	public int pointX;
+	public int pointY;
 
 	public Field(int pointX, int pointY) {
 		this.pointX = pointX;
@@ -19,9 +16,6 @@ public class Field {
 	public int getColumn() {
 		return pointY;
 	}
-	
-	public Color getColor() {
-		return color;
-	}
+
 
 }

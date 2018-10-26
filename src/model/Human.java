@@ -1,20 +1,30 @@
 package model;
 
-import java.awt.Color;
-
-public class Human extends Field {
-	private Color color = Color.ORANGE;
+public class Human{	
+	Field field;
 
 	public Human(int pointX, int pointY) {
-		super(pointX, pointY);
+		field = new Field(pointX,pointY);
 	}
 
 	public void changePoints(int x, int y) {
-		pointX += x;
-		pointY += y;
+		field.pointX += x;
+		field.pointY += y;
+//		pointX += x;
+//		pointY += y;
 	}
-
-	public Color getColor() {
-		return color;
+	
+	public int getRow() {
+		return field.pointX;
 	}
+	
+	public int getColumn() {
+		return field.pointY;
+	}
+	
+	public Field getField() {
+		return field;
+	}
+	
+	
 }

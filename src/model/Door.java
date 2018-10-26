@@ -1,16 +1,21 @@
 package model;
 
-import java.awt.Color;
-
-public class Door extends Field {	
-	private Color color = Color.YELLOW;
-
+public class Door{
+	Field field;
 	public Door(int pointX, int pointY) {
-		super(pointX, pointY);
+		field = new Field(pointX, pointY);
 	}
 	
-	public Color getColor() {
-		return color;
+	public int getRow() {
+		return field.pointX;
+	}
+	
+	public int getColumn() {
+		return field.pointY;
+	}
+	
+	public Field getField() {
+		return field;
 	}
 
 }
