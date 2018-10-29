@@ -17,8 +17,6 @@ public class World {
 
 	public World() {
 		fields = new Field[rows][columns];
-//		firstDoor = new Door(3, 0);
-//		secondDoor = new Door(4, 0);
 	}
 
 	public void generateWorld() {
@@ -28,22 +26,16 @@ public class World {
 			for (int indexC = 0; indexC < columns; indexC++) {
 				if (indexR == 3 && indexC == 0) {
 					firstDoor = new Door(indexR, indexC);
-					// fields[indexR][indexC] = firstDoor;
 				} else if (indexR == 4 && indexC == 0) {
 					secondDoor = new Door(indexR, indexC);
-					// fields[indexR][indexC] = secondDoor;
 				} else if (indexR == 3 && indexC == 2) {
 					firstSecurity = new Security(indexR, indexC);
-					// fields[indexR][indexC] = firstSecurity;
 				} else if ((level == 2 || level == 3) && indexR == 8 && indexC == 2) {
 					secondSecurity = new Security(indexR, indexC);
-					// fields[indexR][indexC] = secondSecurity;
 				} else if (level == 3 && indexR == 13 && indexC == 5) {
 					thirdSecurity = new Security(indexR, indexC);
-					// fields[indexR][indexC] = thirdSecurity;
 				} else if (indexR == rows - 2 && indexC == columns - 1) {
 					prisoner = new Human(indexR, indexC);
-					// fields[indexR][indexC] = prisoner;
 				} else {
 					fields[indexR][indexC] = new Field(indexR, indexC);
 				}
@@ -56,28 +48,28 @@ public class World {
 	}
 
 	public boolean isFieldDoor(int x, int y) {
-
-		return (firstDoor.getField().pointX == x && firstDoor.getField().pointY == y) || (secondDoor.getField().pointX == x && secondDoor.getField().pointY == y); // проверь
+		return (firstDoor.getField().pointX == x && firstDoor.getField().pointY == y)
+				|| (secondDoor.getField().pointX == x && secondDoor.getField().pointY == y);
 	}
 
 	public boolean isFieldSecurity(int x, int y) {
-		if(level == 1) {
+		if (level == 1) {
 			return (firstSecurity.getField().pointX == x && firstSecurity.getField().pointY == y);
 		}
-		
 		if (level == 2) {
-			return (firstSecurity.getField().pointX == x && firstSecurity.getField().pointY == y) || (secondSecurity.getField().pointX == x && secondSecurity.getField().pointY == y);
+			return (firstSecurity.getField().pointX == x && firstSecurity.getField().pointY == y)
+					|| (secondSecurity.getField().pointX == x && secondSecurity.getField().pointY == y);
 		}
-		
 		if (level == 3) {
-			return (firstSecurity.getField().pointX == x && firstSecurity.getField().pointY == y) || (secondSecurity.getField().pointX == x && secondSecurity.getField().pointY == y) || (thirdSecurity.getField().pointX == x && thirdSecurity.getField().pointY == y);
+			return (firstSecurity.getField().pointX == x && firstSecurity.getField().pointY == y)
+					|| (secondSecurity.getField().pointX == x && secondSecurity.getField().pointY == y)
+					|| (thirdSecurity.getField().pointX == x && thirdSecurity.getField().pointY == y);
 		}
 		return false;
 	}
 
 	public boolean isFieldHuman(int x, int y) {
 		return (prisoner.getField().pointX == x && prisoner.getField().pointY == y);
-		//return prisoner.getField() == fields[x][y];
 	}
 
 	public void movePrisoner(int x, int y) {
@@ -111,6 +103,46 @@ public class World {
 	public void checkBottom(int x, int y) {
 		if (prisoner.getRow() == rows - 1) {
 			prisoner.changePoints(0, 0);
+		} else {
+			movePrisoner(x, y);
+		}
+	}
+
+	public void checkLeftForJump(int x, int y) {
+		if (prisoner.getColumn() == 0) {
+			prisoner.changePoints(0, 0);
+		} else if (prisoner.getColumn() == 1) {
+			prisoner.changePoints(0, -1);
+		} else {
+			movePrisoner(x, y);
+		}
+	}
+
+	public void checkRightForJump(int x, int y) {
+		if (prisoner.getColumn() == columns - 1) {
+			prisoner.changePoints(0, 0);
+		} else if (prisoner.getColumn() == columns - 2) {
+			prisoner.changePoints(0, 1);
+		} else {
+			movePrisoner(x, y);
+		}
+	}
+
+	public void checkTopForJump(int x, int y) {
+		if (prisoner.getRow() == 0) {
+			prisoner.changePoints(0, 0);
+		} else if (prisoner.getRow() == 1) {
+			prisoner.changePoints(-1, 0);
+		} else {
+			movePrisoner(x, y);
+		}
+	}
+
+	public void checkBottomForJump(int x, int y) {
+		if (prisoner.getRow() == rows - 1) {
+			prisoner.changePoints(0, 0);
+		} else if (prisoner.getRow() == rows - 2) {
+			prisoner.changePoints(1, 0);
 		} else {
 			movePrisoner(x, y);
 		}
@@ -154,11 +186,10 @@ public class World {
 						fields[indexR][indexC] = secondSecurity.getField();
 					} else if (level == 3 && indexR == thirdSecurity.getRow() && indexC == thirdSecurity.getColumn()) {
 						fields[indexR][indexC] = thirdSecurity.getField();
-					} else if ((indexR == 3 || indexR == 4) && indexC == 0) {
-						new Door(indexR, indexC); // fields[indexR][indexC] = new Door(indexR, indexC);
 					} else {
 						fields[indexR][indexC] = new Field(indexR, indexC);
 					}
+
 					if (level == 2 && indexR == secondSecurity.getRow() && indexC == secondSecurity.getColumn()) {
 						fields[indexR][indexC] = secondSecurity.getField();
 					}
@@ -191,6 +222,47 @@ public class World {
 				&& prisoner.getColumn() == secondDoor.getColumn();
 
 		return getOutFromFirstDoor || getOutFromSecondDoor;
+	}
+	
+	public void hitRLSecurity(int x, int y) {
+		if (Math.abs(prisoner.getColumn() - firstSecurity.getColumn()) == 2) {
+			firstSecurity.hitSecurity(x,y);
+		}
+		
+		if ((level == 2 || level == 3) && Math.abs(prisoner.getColumn() - firstSecurity.getColumn()) == 2) {
+			secondSecurity.hitSecurity(x,y);
+		}
+		
+		if (level == 3 && Math.abs(prisoner.getColumn() - firstSecurity.getColumn()) == 2) {
+			thirdSecurity.hitSecurity(x,y);
+		}
+	}
+	
+	public void hitBTSecurity(int x, int y) {
+		System.out.println(prisoner.getColumn() - firstSecurity.getColumn());
+		if (Math.abs(prisoner.getRow() - firstSecurity.getRow()) == 2) {
+			firstSecurity.hitSecurity(x,y);
+		}
+		
+		if ((level == 2 || level == 3) && Math.abs(prisoner.getRow() - firstSecurity.getRow()) == 2) {
+			secondSecurity.hitSecurity(x,y);
+		}
+		
+		if (level == 3 && Math.abs(prisoner.getRow() - firstSecurity.getRow()) == 2) {
+			thirdSecurity.hitSecurity(x,y);
+		}
+	}
+	
+	public void securityLoseAttention() {
+		firstSecurity.loseAttention();
+		
+		if (level == 2 || level == 3) {
+			secondSecurity.loseAttention();
+		}
+		
+		if (level == 3) {
+			thirdSecurity.loseAttention();
+		}
 	}
 
 	public boolean isPrisonerWin() {
