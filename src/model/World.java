@@ -225,15 +225,15 @@ public class World {
 	}
 	
 	public void hitRLSecurity(int x, int y) {
-		if (Math.abs(prisoner.getColumn() - firstSecurity.getColumn()) == 2) {
+		if (Math.abs(prisoner.getColumn() - firstSecurity.getColumn()) == 2 && prisoner.getRow() == firstSecurity.getRow()) {
 			firstSecurity.hitSecurity(x,y);
 		}
 		
-		if ((level == 2 || level == 3) && Math.abs(prisoner.getColumn() - firstSecurity.getColumn()) == 2) {
+		if ((level == 2 || level == 3) && Math.abs(prisoner.getColumn() - secondSecurity.getColumn()) == 2 && prisoner.getRow() == secondSecurity.getRow()) {
 			secondSecurity.hitSecurity(x,y);
 		}
 		
-		if (level == 3 && Math.abs(prisoner.getColumn() - firstSecurity.getColumn()) == 2) {
+		if (level == 3 && Math.abs(prisoner.getColumn() - thirdSecurity.getColumn()) == 2  && prisoner.getRow() == thirdSecurity.getRow()) {
 			thirdSecurity.hitSecurity(x,y);
 		}
 	}

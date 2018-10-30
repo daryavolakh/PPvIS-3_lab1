@@ -74,13 +74,13 @@ public class MainWindow {
 
 				else if (keyEvent.getCode() == KeyCode.A && keyEvent.isAltDown()) {
 					System.out.println("ALT");
-					controller.hitRLSecurity(0,2);
+					controller.hitRLSecurity(0,-2);
 					startMove();
 				}
 
 				else if (keyEvent.getCode() == KeyCode.D && keyEvent.isAltDown()) {
 					System.out.println("ALT");
-					controller.hitRLSecurity(0,-2);
+					controller.hitRLSecurity(0,2);
 					startMove();
 				}
 
